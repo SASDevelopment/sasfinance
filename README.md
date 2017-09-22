@@ -1,3 +1,0 @@
-# test
-# Development
-# sasfinance
