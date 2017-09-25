@@ -128,7 +128,8 @@ function royalties3_show_tables_in_sasroyalties_dev() {
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
-	$myecho = "<table class=\"blue-text text-darken-2 bordered\"><th>Table Name<th># Records";
+	$myecho = "<table class=\"blue-text text-darken-2 bordered\"><th>Table Name<th># Records<th>Clear";
+	$mymodal= '';
 
 	$query_select_temp_ebook_bn = $db->query("
 	SELECT TABLE_NAME, TABLE_ROWS
@@ -138,8 +139,22 @@ function royalties3_show_tables_in_sasroyalties_dev() {
 		$TABLE_NAME=$myrow['TABLE_NAME'];
 		$TABLE_ROWS=$myrow['TABLE_ROWS'];
 
+		$count++;
+
 		if ($TABLE_NAME != 'Settings') { 
-			$myecho .= "<tr><td>$TABLE_NAME</td><td>".number_format(royalties3_table_count($TABLE_NAME), 0, '.', ',')."</td></tr>";
+			$myecho .= "<tr><td>$TABLE_NAME</td><td>".number_format(royalties3_table_count($TABLE_NAME), 0, '.', ',')."</td><td><a class='modal-trigger' href='#modal".$TABLE_NAME."' onclick='closeToast();'><i class='small material-icons' style='vertical-align:middle'>delete</i></a></td></tr>";
+
+			$mymodal .= "<!-- Modal Structure -->
+			<div id='modal".$TABLE_NAME."' class='modal'>
+			  <div class='modal-content'>
+				<h5><i class='small material-icons' style='vertical-align:middle'>delete</i> Clear ".$TABLE_NAME."</h5>
+				<p>Clicking 'Delete Records From ".$TABLE_NAME."' will delete all of the data currently stored in ".$TABLE_NAME." in Navicat so that you can re-import.</p>
+			  </div>
+			  <div class='modal-footer'>
+				<a href='#!' class='modal-action modal-close waves-effect waves-light btn'><i class='material-icons left'>clear</i>Do Not Delete</a>
+				<a href='index.php?step=2.".$count."&stepContent=Clear ".$TABLE_NAME."&process=1&clear_table=".$TABLE_NAME."#step2' class='modal-action modal-close waves-effect waves-light btn'><i class='material-icons left'>delete</i>Delete All Records From ".$TABLE_NAME."</a>
+			  </div>
+			</div>";
 		}
 	}
 	$query_select_temp_ebook_bn->free();
@@ -147,7 +162,7 @@ function royalties3_show_tables_in_sasroyalties_dev() {
 
 	$myecho .= "</table>";
 
-	return $myecho;
+	return $myecho.$mymodal;
 
 }
 
@@ -156,7 +171,7 @@ function royalties3_imported_royalty_processing_data() {
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
-	$myecho = "<table class=\"blue-text text-darken-2 bordered\"><th>Temp Table<th># Temp records<th># Records imported";
+	$myecho = "<table class=\"blue-text text-darken-2 bordered\"><th>Temp Table<th># Temp records<th># Records imported<th># Records skipped";
 
 	$query_select_temp_ebook_bn = $db->query("SELECT
 		ORG_FILE_SOURCE,
@@ -169,16 +184,37 @@ function royalties3_imported_royalty_processing_data() {
 		ORG_FILE_SOURCE;");
 	while($myrow = $query_select_temp_ebook_bn->fetch_assoc()) {
 		$ORG_FILE_SOURCE=$myrow['ORG_FILE_SOURCE'];
+		$count_org=royalties3_table_count($ORG_FILE_SOURCE);
 		$count=$myrow['count'];
+		$count_skipped=$count_org-$count;
 
-		$myecho .= "<tr><td>$ORG_FILE_SOURCE</td><td>".number_format(royalties3_table_count($ORG_FILE_SOURCE), 0, '.', ',')."</td><td>".number_format($count, 0, '.', ',')."</td></tr>";
+		if ($count_skipped) { 
+			$skipped=number_format($count_skipped, 0, '.', ',');
+		} else { 
+			$skipped='';
+		}
+
+		$myecho .= "<tr><td>$ORG_FILE_SOURCE</td><td>".number_format($count_org, 0, '.', ',')."</td><td>".number_format($count, 0, '.', ',')."</td><td><a class='modal-trigger' href='#modal".$ORG_FILE_SOURCE."skipped' onclick='closeToast();'>".$skipped."</a></td></tr>";
+
+		if ($skipped) { 
+			$mymodal .= "<!-- Modal Structure -->
+			<div id='modal".$ORG_FILE_SOURCE."skipped' class='modal'>
+			  <div class='modal-content'>
+				<h5><i class='small material-icons' style='vertical-align:middle'>do_not_disturb</i> ".$ORG_FILE_SOURCE." skipped records</h5>
+				<p>".royalties3_display_import_exceptions($ORG_FILE_SOURCE)."</p>
+			  </div>
+			  <div class='modal-footer'>
+				<a href='#!' class='modal-action modal-close waves-effect waves-light btn'><i class='material-icons left'>clear</i>Close</a>
+			  </div>
+			</div>";
+		}
 	}
 	$query_select_temp_ebook_bn->free();
 	$db->close();
 
 	$myecho .= "</table>";
 
-	return $myecho;
+	return $myecho.$mymodal;
 
 }
 
@@ -276,6 +312,54 @@ function royalties3_get_quarter_options($field_name, $field_value) {
 	$options .= "</select>";
 
 	return $options;
+}
+
+function royalties3_display_import_exceptions($table_name) {
+
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+	
+	$sql="SELECT
+		sasroyalties_dev.$table_name.*
+	FROM
+		sasroyalties_dev.$table_name
+	LEFT JOIN sasroyalties.royalty_processing ON sasroyalties_dev.$table_name.id = sasroyalties.royalty_processing.ORG_FILE_SOURCE_RECORD_ID 
+	AND royalty_processing.ORG_FILE_SOURCE='$table_name'
+	WHERE
+		sasroyalties.royalty_processing.id IS NULL
+		;";
+
+	//return $sql;
+
+	$query_select_temp = $db->query($sql);
+
+    $header='';
+    $myrows='';
+
+    while($myrow = $query_select_temp->fetch_assoc()) {
+        if($header==''){
+            $header.='<tr>'; 
+            $myrows.='<tr>'; 
+            foreach($myrow as $key => $value){ 
+                $header.='<th>'.$key.'</th>'; 
+                $myrows.='<td>'.$value.'</td>'; 
+            } 
+            $header.='</tr>'; 
+            $myrows.='</tr>'; 
+        }else{
+            $myrows.='<tr>'; 
+            foreach($myrow as $value){ 
+                $myrows .= "<td>".$value."</td>"; 
+            } 
+            $myrows.='</tr>'; 
+        }
+    } 
+
+	$query_select_temp->free();
+	$db->close();
+
+	return '<table class="bordered striped">'.$header.$myrows.'</table>';
+
 }
 
 
