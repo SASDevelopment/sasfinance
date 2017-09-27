@@ -26,7 +26,7 @@ if ($step==2) {
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
 	$query_sp = "CALL sasroyalties_dev.clear_temp()";
-	//$query_call_sp=$db->query($query_sp);
+	$query_call_sp=$db->query($query_sp);
 
 	$db->close();
 
@@ -38,7 +38,7 @@ if ($step>2 && $step<3) {
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
 	$query_delete_temp_sibi = "DELETE FROM sasroyalties_dev.$clear_table";
-	//$resultdelete=$db->query($query_delete_temp_sibi);
+	$resultdelete=$db->query($query_delete_temp_sibi);
 
 	$db->close();
 
@@ -50,7 +50,7 @@ if ($step==3) {
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
 	$query_sp = "CALL sasroyalties_dev.step0_execute_all_steps()";
-	//$query_call_sp=$db->query($query_sp);
+	$query_call_sp=$db->query($query_sp);
 
 	$db->close();
 }
@@ -60,7 +60,7 @@ if ($step==4) {
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
 	$query_sp = "CALL sasroyalties_dev.step0_execute_all_steps()";
-	//$query_call_sp=$db->query($query_sp);
+	$query_call_sp=$db->query($query_sp);
 
 	$db->close();
 }
@@ -69,8 +69,8 @@ if ($step==6) {
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
-	$query_sp = "CALL sasroyalties_dev.step9_load_transactions_to_authors_net_royalties()";
-	//$query_call_sp=$db->query($query_sp);
+	$query_sp = "CALL sasroyalties_dev.step09_load_transactions_to_dev_authors_net_royalties()";
+	$query_call_sp=$db->query($query_sp);
 
 	$db->close();
 }
