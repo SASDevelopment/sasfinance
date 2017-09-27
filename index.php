@@ -7,9 +7,7 @@ if (isset($_REQUEST['step'])) { $step=$_REQUEST['step']; } else { $step=''; }
 if (isset($_REQUEST['stepContent'])) { $stepContent=$_REQUEST['stepContent']; } else { $stepContent=''; }
 if (isset($_REQUEST['process'])) { $process=$_REQUEST['process']; } else { $process=''; }
 
-if ($step) { 
-	include('process_btn.php');
-}
+
 ?>
 <html>
 <head>
@@ -85,7 +83,14 @@ if ($step) {
     border-left:  1px solid #D0D0D0;
 	}
 	</style>
+
+
 </head>
+<?
+if ($step) { 
+	include('process_btn.php');
+}
+?>
 <body onload="displayCustomHTMLToast();">
   <nav>
     <div class="nav-wrapper">
@@ -108,7 +113,6 @@ for ($i=1; $i<=10; $i++){
 	}
 }
 ?>
-
 <div class="container">       
 <h5 class="header">Step 1</h5>
 <p class="caption">Set start dates, end dates, royalty periods, statement periods and carryover amounts.</p>
@@ -213,7 +217,7 @@ if ($step==4) {
 
 <div class="card-panel grey <?=$panel[4]?>" style="width: 100%;;">
 <h5><i class="small material-icons" style="vertical-align:middle">cached</i> <a class="modal-trigger" href="#modal4" onclick="closeToast();">Process Royalties</a></h5>
-<? //if ($step>=4) { ?>
+<? if ($step>=4) { ?>
 <ul class="collapsible" data-collapsible="accordion">
     <li>
       <div class="collapsible-header"><i class="material-icons">dehaze</i>View import counts</div>
@@ -221,7 +225,7 @@ if ($step==4) {
 	  <!--collapsible popout-->
     </li>
 </ul>
-<? //} ?>
+<? } ?>
 </div>
 
 <!-- Modal Structure -->
@@ -236,6 +240,7 @@ if ($step==4) {
 	  </div>
 	</div>
 
+<a class="btn" onclick="Materialize.toast('I am a toast', 4000,'',function(){alert('Your toast was dismissed')})">
 
 
 
