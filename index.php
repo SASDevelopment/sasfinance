@@ -240,7 +240,6 @@ if ($step==4) {
 	  </div>
 	</div>
 
-<a class="btn" onclick="Materialize.toast('I am a toast', 4000,'',function(){alert('Your toast was dismissed')})">
 
 
 
