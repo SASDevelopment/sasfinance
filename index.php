@@ -152,7 +152,7 @@ if ($step>=2 && $step<3) {
 
 <div class="card-panel grey <?=$panel[2]?>" style="width: 100%;">
 <h5><i class="small material-icons" style="vertical-align:middle">delete</i> <a class="modal-trigger" href="#modal2" onclick="closeToast();">Clear temp tables</a></h5>
-<? if ($step>=2) { ?>
+<? //if ($step>=2) { ?>
 <ul class="collapsible" data-collapsible="accordion">
     <li>
       <div class="collapsible-header"><i class="material-icons">dehaze</i>View temp table counts</div>
@@ -160,7 +160,7 @@ if ($step>=2 && $step<3) {
 	  <!--collapsible popout-->
     </li>
 </ul>
-<? } ?>
+<? //} ?>
 </div>
 <!-- Modal Structure -->
 	<div id="modal2" class="modal">
@@ -213,7 +213,7 @@ if ($step==4) {
 
 <div class="card-panel grey <?=$panel[4]?>" style="width: 100%;;">
 <h5><i class="small material-icons" style="vertical-align:middle">cached</i> <a class="modal-trigger" href="#modal4" onclick="closeToast();">Process Royalties</a></h5>
-<? if ($step>=4) { ?>
+<? //if ($step>=4) { ?>
 <ul class="collapsible" data-collapsible="accordion">
     <li>
       <div class="collapsible-header"><i class="material-icons">dehaze</i>View import counts</div>
@@ -221,7 +221,7 @@ if ($step==4) {
 	  <!--collapsible popout-->
     </li>
 </ul>
-<? } ?>
+<? //} ?>
 </div>
 
 <!-- Modal Structure -->
