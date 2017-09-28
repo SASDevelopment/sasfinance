@@ -119,7 +119,7 @@ if ($step==2) {
 }
 
 if ($step>2 && $step<3) { 
-
+	$clear_table=$_REQUEST['clear_table'];
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
