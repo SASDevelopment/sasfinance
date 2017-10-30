@@ -6,92 +6,6 @@
   toastInstance.remove();
 }
 </script>
-
-
-<style>
-.preloader-background {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background-color: #eee;
-	position: fixed;
-	z-index: 999;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-  p {
-	padding-top:120px;
-	margin-left: -60px;
-	opacity: 0.8;
-  } 
-}
-
-// ADD BLINKING TEXT CLASS
-.blinking {
-	animation: blinker 0.5s linear infinite;
-}
-@keyframes blinker {  
-  50% { opacity: 0; }
-}
-</style>
-
-
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(){
-	$('.preloader-background').delay(1700).fadeOut('slow');
-	
-	$('.preloader-wrapper')
-		.delay(1700)
-		.fadeOut();
-});
-</script>
-
-<!-- Preloader and it's background. -->
-<div class="preloader-background">
-<div class="preloader-wrapper big active">
-      <div class="spinner-layer spinner-blue">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-red">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-yellow">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-
-      <div class="spinner-layer spinner-green">
-        <div class="circle-clipper left">
-          <div class="circle"></div>
-        </div><div class="gap-patch">
-          <div class="circle"></div>
-        </div><div class="circle-clipper right">
-          <div class="circle"></div>
-        </div>
-      </div>
-    </div>&nbsp;
-  <p class="blinking">Loading...</p>
-</div>
 <?
 if ($step && $process) { 
 ?>
@@ -120,10 +34,14 @@ if ($step==2) {
 
 if ($step>2 && $step<3) { 
 	$clear_table=$_REQUEST['clear_table'];
+
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
 	$query_delete_temp_sibi = "DELETE FROM sasroyalties_dev.$clear_table";
+	$resultdelete=$db->query($query_delete_temp_sibi);
+
+	$query_delete_temp_sibi = "DELETE FROM sasroyalties.royalty_processing where ORG_FILE_SOURCE='$clear_table'";
 	$resultdelete=$db->query($query_delete_temp_sibi);
 
 	$db->close();
@@ -149,6 +67,10 @@ if ($step==4) {
 	$query_call_sp=$db->query($query_sp);
 
 	$db->close();
+
+	if ($query_call_sp) { 
+
+	}
 }
 
 if ($step==6) { 
@@ -160,8 +82,6 @@ if ($step==6) {
 
 	$db->close();
 }
-
-
 ?>
 
 

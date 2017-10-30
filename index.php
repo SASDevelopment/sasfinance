@@ -7,7 +7,9 @@ if (isset($_REQUEST['step'])) { $step=$_REQUEST['step']; } else { $step=''; }
 if (isset($_REQUEST['stepContent'])) { $stepContent=$_REQUEST['stepContent']; } else { $stepContent=''; }
 if (isset($_REQUEST['process'])) { $process=$_REQUEST['process']; } else { $process=''; }
 
-
+if ($step) { 
+	include('process_btn.php');
+}
 ?>
 <html>
 <head>
@@ -83,14 +85,7 @@ if (isset($_REQUEST['process'])) { $process=$_REQUEST['process']; } else { $proc
     border-left:  1px solid #D0D0D0;
 	}
 	</style>
-
-
 </head>
-<?
-if ($step) { 
-	include('process_btn.php');
-}
-?>
 <body onload="displayCustomHTMLToast();">
   <nav>
     <div class="nav-wrapper">
@@ -113,6 +108,7 @@ for ($i=1; $i<=10; $i++){
 	}
 }
 ?>
+
 <div class="container">       
 <h5 class="header">Step 1</h5>
 <p class="caption">Set start dates, end dates, royalty periods, statement periods and carryover amounts.</p>
@@ -122,18 +118,18 @@ for ($i=1; $i<=10; $i++){
 <th><th width="350" class="borderleft">Xulon<th width="350" class="borderleft">Hillcrest
 <tr>
 <td>Current Reporting Start Date</td><td class="borderleft"><?=royalties3_royalty_field_form(1, 'current_reporting_balance_start_date', 'current_reporting_end_date', 10, 'date')?></td>
-<td class="borderleft"><?=royalties3_royalty_field_form(27, 'current_reporting_balance_start_date', 'current_reporting_end_date', 10, 'date')?></td>
+<td class="borderleft"></td>
 </tr>
 <tr>
 <td>Current Reporting End Date</td><td class="borderleft"><?=royalties3_royalty_field_form(1, 'current_reporting_end_date', 'current_reporting_end_date', 10, 'date')?></td>
-<td class="borderleft"><?=royalties3_royalty_field_form(27, 'current_reporting_end_date', 'current_reporting_end_date', 10, 'date')?></td>
+<td class="borderleft"></td>
 </tr>
 <tr><td>Royalty Period</td>
 <td class="borderleft"><?=royalties3_royalty_field_form(1, 'Royalty_Period', 'royalty_period', 20, NULL)?></td>
 <td class="borderleft"></td></tr>
 <tr><td>Statement Period</td>
 <td class="borderleft"><?=royalties3_royalty_field_form(1, 'Statement_Date', 'royalty_period', 10, 'date')?></td>
-<td class="borderleft"><?=royalties3_royalty_field_form(27, 'Statement_Date', 'royalty_period', 10, 'date')?></td></tr>
+<td class="borderleft"></td></tr>
 <tr><td>Carryover Amount</td>
 <td class="borderleft"><?=royalties3_royalty_field_form(1, 'Carryover', 'royalty_period', 5, 'currency')?></td>
 <td class="borderleft"><?=royalties3_royalty_field_form(27, 'Carryover', 'royalty_period', 5, 'currency')?></td></tr>
@@ -204,7 +200,7 @@ if ($step>=2 && $step<3) {
 
 
 <?
-if ($step==4) { 
+if ($step>=4) { 
 	$collapsible['step4']='collapsible popout active';
 } else { 
 	$collapsible['step4']='collapsible-body';
@@ -215,7 +211,7 @@ if ($step==4) {
 <h5 class="header">Step 4</h5>
 <p><em>This step assumes that you have already imported the latest data into the temp tables using Navicat in Step 3.</em></p>
 
-<div class="card-panel grey <?=$panel[4]?>" style="width: 100%;;">
+<div class="card-panel grey <?=$panel[4]?>" style="width: 100%;">
 <h5><i class="small material-icons" style="vertical-align:middle">cached</i> <a class="modal-trigger" href="#modal4" onclick="closeToast();">Process Royalties</a></h5>
 <? if ($step>=4) { ?>
 <ul class="collapsible" data-collapsible="accordion">
@@ -257,7 +253,7 @@ if ($step==4) {
     <h5><i class="small material-icons" style="vertical-align:middle">face</i> Review Exceptions</h5>
     <p>
       <div class="content">
-      <iframe width="100%" height="285" src="sasroyalties/royalties_exceptions.php" frameborder="0" allowfullscreen></iframe></div>
+      <iframe width="100%" height="75%" src="sasroyalties/royalties_exceptions.php" frameborder="0" allowfullscreen></iframe></div>
     </p>
   </div>
   <div class="modal-footer">
