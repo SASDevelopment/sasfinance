@@ -171,6 +171,8 @@ function royalties3_imported_royalty_processing_data() {
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
+	$view_table='';
+
 	$myecho = "<table class=\"blue-text text-darken-2 bordered\"><th>Temp Table<th># Temp records<th># Records imported<th># Records skipped";
 
 	$query_select_temp_ebook_bn = $db->query("SELECT
@@ -194,7 +196,7 @@ function royalties3_imported_royalty_processing_data() {
 			$skipped='';
 		}
 
-		$myecho .= "<tr><td>$ORG_FILE_SOURCE</td><td>".number_format($count_org, 0, '.', ',')."</td><td>".number_format($count, 0, '.', ',')."</td><td><a class='modal-trigger' href='#modal".$ORG_FILE_SOURCE."skipped' onclick='closeToast();'>".$skipped."</a></td></tr>";
+		$myecho .= "<tr><td>$ORG_FILE_SOURCE</td><td>".number_format($count_org, 0, '.', ',')."</td><td><a class='modal-trigger' href='#modal".$ORG_FILE_SOURCE."view' onclick='closeToast();'>".number_format($count, 0, '.', ',')."</a></td><td><a class='modal-trigger' href='#modal".$ORG_FILE_SOURCE."skipped' onclick='closeToast();'>".$skipped."</a></td></tr>";
 
 		if ($skipped) { 
 			$mymodal .= "<!-- Modal Structure -->
@@ -206,15 +208,31 @@ function royalties3_imported_royalty_processing_data() {
 			  <div class='modal-footer'>
 				<a href='#!' class='modal-action modal-close waves-effect waves-light btn'><i class='material-icons left'>clear</i>Close</a>
 			  </div>
-			</div>";
+			</div>
+			";
 		}
+
+		$view_table .= "<!-- Modal Structure -->
+		<div id='modal".$ORG_FILE_SOURCE."view' class='modal'>
+		  <div class='modal-content'>
+			<h5><i class='small material-icons' style='vertical-align:middle'>face</i> View records imported from $ORG_FILE_SOURCE</h5>
+			<p>
+			  <div class='content'>
+			  <iframe width='100%' height='75%' src='view_table.php?ORG_FILE_SOURCE=$ORG_FILE_SOURCE' frameborder='0' allowfullscreen></iframe></div>
+			</p>
+		  </div>
+		  <div class='modal-footer'>
+				<a href='index.php?step=6&stepContent=Viewed $ORG_FILE_SOURCE&process=1#step5' class='modal-action modal-close waves-effect waves-light btn'><i class='material-icons left'>clear</i>Close</a>
+		  </div>
+		</div>";
+
 	}
 	$query_select_temp_ebook_bn->free();
 	$db->close();
 
 	$myecho .= "</table>";
 
-	return $myecho.$mymodal;
+	return $myecho.$mymodal.$view_table;
 
 }
 
@@ -327,6 +345,97 @@ function royalties3_display_import_exceptions($table_name) {
 	AND royalty_processing.ORG_FILE_SOURCE='$table_name'
 	WHERE
 		sasroyalties.royalty_processing.id IS NULL
+		;";
+
+	//return $sql;
+
+	$query_select_temp = $db->query($sql);
+
+    $header='';
+    $myrows='';
+
+    while($myrow = $query_select_temp->fetch_assoc()) {
+        if($header==''){
+            $header.='<tr>'; 
+            $myrows.='<tr>'; 
+            foreach($myrow as $key => $value){ 
+                $header.='<th>'.$key.'</th>'; 
+                $myrows.='<td>'.$value.'</td>'; 
+            } 
+            $header.='</tr>'; 
+            $myrows.='</tr>'; 
+        }else{
+            $myrows.='<tr>'; 
+            foreach($myrow as $value){ 
+                $myrows .= "<td>".$value."</td>"; 
+            } 
+            $myrows.='</tr>'; 
+        }
+    } 
+
+	$query_select_temp->free();
+	$db->close();
+
+	return '<table class="bordered striped">'.$header.$myrows.'</table>';
+
+}
+
+
+function royalties3_display_imported_records($table_name) {
+
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+	
+	$sql="SELECT
+		*
+	FROM
+		sasroyalties.royalty_processing
+	WHERE royalty_processing.ORG_FILE_SOURCE='$table_name'
+		;";
+
+	//return $sql;
+
+	$query_select_temp = $db->query($sql);
+
+    $header='';
+    $myrows='';
+
+    while($myrow = $query_select_temp->fetch_assoc()) {
+        if($header==''){
+            $header.='<tr>'; 
+            $myrows.='<tr>'; 
+            foreach($myrow as $key => $value){ 
+                $header.='<th>'.$key.'</th>'; 
+                $myrows.='<td>'.$value.'</td>'; 
+            } 
+            $header.='</tr>'; 
+            $myrows.='</tr>'; 
+        }else{
+            $myrows.='<tr>'; 
+            foreach($myrow as $value){ 
+                $myrows .= "<td>".$value."</td>"; 
+            } 
+            $myrows.='</tr>'; 
+        }
+    } 
+
+	$query_select_temp->free();
+	$db->close();
+
+	return '<table class="bordered striped">'.$header.$myrows.'</table>';
+
+}
+
+
+function royalties3_display_temp_table($table_name) {
+
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+	
+	$sql="SELECT
+		sasroyalties_dev.$table_name.*
+	FROM
+		sasroyalties_dev.$table_name
 		;";
 
 	//return $sql;

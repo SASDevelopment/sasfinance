@@ -16,6 +16,8 @@ $add = $_GET["add"];
 ?>
 <html>
 <head>
+
+
     <style>
         body table, tr, td, ul, li, p, a {
             font-family: Arial, Helvetica, sans-serif;
@@ -79,6 +81,14 @@ $add = $_GET["add"];
             vertical-align: 50%;
         }
     </style>
+
+	<meta name="theme-color" content="#EE6E73">
+
+	<link rel="stylesheet" type="text/css" href="../assets/css/materialize/css/materialize.css">
+	<script src="../assets/css/materialize/js/materialize.js"></script>
+    <link href="//fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <body>
 
@@ -284,7 +294,7 @@ echo $mailcontent;
 <table id="excel">
     <tr id="excel">
         <td id="excel" width="100"><div align="left"><strong>Total Records:</strong></div></td>
-        <td id="excel" width="30"><div align="left"><?php echo $count; ?></div></td>
+        <td id="excel" width="30"><div align="left"><?php echo $count-1; ?></div></td>
         <td id="excel" width="155"><form method='POST' action='/xulonreports/csv/<?php echo $_SESSION["xulonname"]; ?>_royalties_exceptions_report.xls' target='_blank'><input type="submit" name="button2" id="button2" value="Export CSV File" style='width:150px;'></form></td>
         <td id="excel" width="155"></td>
         <td width="155"><input class="btn1" type='button' id='reprocess' value='Re-process Exceptions' onclick='reprocess()'></td>
