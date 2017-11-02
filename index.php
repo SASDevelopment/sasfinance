@@ -374,8 +374,13 @@ if ($step>=4) {
 <!-- Modal Structure -->
 	<div id="modal10" class="modal">
 	  <div class="modal-content">
-		<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal10">Check Batch Export</a></h5>
-		<p style="font-weight:bold;">Export</p>
+		<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal10">Xulon Check Batch Export</a></h5>
+		<p style="font-weight:bold;">Export Xulon</p>
+		<li><a href="check_batch_export.php?type=New_US" target="_blank">New_US</a>
+		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
+		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
+		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
+		<p style="font-weight:bold;">Export Hillcrest</p>
 		<li><a href="check_batch_export.php?type=New_US" target="_blank">New_US</a>
 		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
 		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
