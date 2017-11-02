@@ -385,6 +385,11 @@ if ($step>=4) {
 		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
 		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
 		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
+		<p style="font-weight:bold;">Export Terminated</p>
+		<li><a href="check_batch_export.php?type=New_US" target="_blank">New_US</a>
+		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
+		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
+		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
 	  </div>
 	  <div class="modal-footer">
 		<a href="index.php?step=10&stepContent=Check Batch Export&process=1#step10" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
