@@ -66,6 +66,41 @@ if ($step==4) {
 	$query_sp = "CALL sasroyalties_dev.step00_execute_all_steps()";
 	$query_call_sp=$db->query($query_sp);
 
+
+/* alternate method */
+
+/*
+	$query_delete_royalty_processing = "delete from sasroyalties.royalty_processing;";
+	$resultdelete=$db->query($query_delete_royalty_processing);
+
+	$query_sp = "CALL sasroyalties_dev.copy_xulonpress_tables()";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step01_data_repairs();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step02_process_itasca();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step03_process_ebooks();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step04_process_lsi();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step05_process_sibi();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step06_process_mbo();";
+	$query_call_sp=$db->query($query_sp);
+
+	$query_sp = "CALL sasroyalties_dev.step08_update_royalty_processing_data();";
+	$query_call_sp=$db->query($query_sp);
+
+*/
+
+
+
 	$db->close();
 
 	if ($query_call_sp) { 

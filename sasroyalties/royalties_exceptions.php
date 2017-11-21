@@ -115,7 +115,7 @@ $query = "
     sasroyalties.royalty_processing.ORG_FILE_SOURCE,
     sasroyalties.royalty_processing.ORG_TITLE,
     sasroyalties.royalty_processing.ORG_AUTHOR,
-    sasroyalties.royalty_processing.royalty_classfication,
+    sasroyalties.royalty_processing.royalty_classification,
     sasroyalties.royalty_processing.period_exchange_rate,
     sasroyalties.royalty_processing.is_exception,
     sasroyalties.royalty_processing.exclude

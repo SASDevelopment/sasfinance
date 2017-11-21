@@ -131,8 +131,8 @@ for ($i=1; $i<=10; $i++){
 <td class="borderleft"><?=royalties3_royalty_field_form(1, 'Statement_Date', 'royalty_period', 10, 'date')?></td>
 <td class="borderleft"></td></tr>
 <tr><td>Carryover Amount</td>
-<td class="borderleft"><?=royalties3_royalty_field_form(1, 'Carryover', 'royalty_period', 5, 'currency')?></td>
-<td class="borderleft"><?=royalties3_royalty_field_form(27, 'Carryover', 'royalty_period', 5, 'currency')?></td></tr>
+<td class="borderleft">$25.00</td>
+<td class="borderleft">$25.00</td></tr>
 </table>
 </div>
 <p></p>
@@ -213,7 +213,7 @@ if ($step>=4) {
 
 <div class="card-panel grey <?=$panel[4]?>" style="width: 100%;">
 <h5><i class="small material-icons" style="vertical-align:middle">cached</i> <a class="modal-trigger" href="#modal4" onclick="closeToast();">Process Royalties</a></h5>
-<? if ($step>=4) { ?>
+<? /*if ($step>=4) {*/ ?>
 <ul class="collapsible" data-collapsible="accordion">
     <li>
       <div class="collapsible-header"><i class="material-icons">dehaze</i>View import counts</div>
@@ -221,7 +221,7 @@ if ($step>=4) {
 	  <!--collapsible popout-->
     </li>
 </ul>
-<? } ?>
+<? /*}*/ ?>
 </div>
 
 <!-- Modal Structure -->
@@ -292,7 +292,7 @@ if ($step>=4) {
 <p>View royalty reports before loading to Author Center.</p>
 
 <div class="card-panel grey <?=$panel[7]?>" style="width: 100%;;">
-<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="#modal7" onclick="closeToast();">View Royalty Test Reports</a></h5>
+<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="/xuloncontrolpanel/einstein" target='_blank' onclick="closeToast();">View Royalty Test Reports</a></h5><!--#modal7-->
 </div>
 
 <!-- Modal Structure -->
@@ -385,11 +385,6 @@ if ($step>=4) {
 		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
 		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
 		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
-		<p style="font-weight:bold;">Export Terminated</p>
-		<li><a href="check_batch_export.php?type=New_US" target="_blank">New_US</a>
-		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
-		<li><a href="check_batch_export.php?type=Existing_US" target="_blank">Existing_US</a>
-		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
 	  </div>
 	  <div class="modal-footer">
 		<a href="index.php?step=10&stepContent=Check Batch Export&process=1#step10" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
@@ -422,6 +417,9 @@ if ($step>=4) {
 ?>
 
 </div>
+
+
+
 
 
 

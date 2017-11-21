@@ -24,12 +24,12 @@
         
 <?php
 
-$GETSTARTDATE='2017-01-01';
-$GETENDDATE='2017-07-31';
+$GETSTARTDATE='2017-09-01';
+$GETENDDATE='2017-09-30';
 
 if ($_GET['imprint_id']==27) { 
-	$GETCID='HC8459';
-	$GETISBN='9781634139892';
+	$GETCID='HC56095';
+	$GETISBN='9781635051599';
 } else { 
 	$GETCID='00300000005oKde';
 	$GETISBN='9781602665163';
@@ -46,6 +46,7 @@ echo "<h5>Test Royalties 3.0 Reports</h5>
 <li><a href='?imprint_id=27&GETCID=HC8459&GETISBN=9781634139892'>Gregory Cagle (Hillcrest)</a>
 <li><a href='?imprint_id=27&GETCID=HC18389&GETISBN=9781937600464'>Justin Rosales (Hillcrest)</a>
 <li><a href='?imprint_id=27&GETCID=HC10799&GETISBN=9781936401567'>McCandless (Hillcrest)</a>
+<li><a href='?imprint_id=27&GETCID=HC56095&GETISBN=9781635051599'>Mary Tichi (Hillcrest)</a>
 <li><a href='?imprint_id=27&GETCID=HC13104&GETISBN='>Susan Finterty (Hillcrest)</a>
 <li><a href='?imprint_id=27&GETCID=HC52410&GETISBN='>Julie Causton (Hillcrest)</a>
 ";
