@@ -1,5 +1,4 @@
 <?php include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php"); ?>
-<!--2018-02-15 notes-->
 <? 
 
 include_once('assets/functions.royalties3.php'); 
@@ -13,6 +12,7 @@ if ($step) {
 	include('process_btn.php');
 }
 ?>
+<!--2018-02-15 notes-->
 <html>
 <head>
 	<title> Royalties 3.0 </title>
