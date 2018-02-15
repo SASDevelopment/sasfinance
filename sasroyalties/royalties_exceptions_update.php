@@ -25,6 +25,16 @@ if ($file == 'temp_ebook_amazon') {
     $fields = rtrim($fields,",");
 }
 
+// eBook Google
+if ($file == 'temp_ebook_google') {
+    unset($fields);
+    if($isbn <> '') { $fields .= "sasroyalties_dev." . $file . ".`Primary ISBN` = '" . $isbn . "',"; }
+    if($books_sold <> '') { $fields .= "sasroyalties_dev." . $file . ".`Qty` = '" . $books_sold . "',"; }
+    if($royalty_amount <> '') { $fields .= "sasroyalties_dev." . $file . ".`Payment Amount` = '" . $royalty_amount . "',"; }
+    if($class <> '') { $fields .= "sasroyalties_dev." . $file . ".`royalty_classifaction` = '" . $class . "',"; }
+    $fields = rtrim($fields,",");
+}
+
 // Barnes and Noble
 if ($file == 'temp_ebook_bn') {
     unset($fields);
@@ -145,7 +155,7 @@ if ($file == 'temp_ebook_scribd') {
 // Itasca
 if ($file == 'temp_itasca') {
     unset($fields);
-    if($isbn <> '') { $fields .= "sasroyalties_dev." . $file . ".`isbn_13` = '" . $isbn . "',"; }
+    if($isbn <> '') { $fields .= "sasroyalties_dev." . $file . ".`ISBN` = '" . $isbn . "',"; }
     if($books_sold <> '') { $fields .= "sasroyalties_dev." . $file . ".`Qty` = '" . $books_sold . "',"; }
     #if($books_returned <> '') { $fields .= "sasroyalties_dev." . $file . ".`Qty` = '" . $books_returned . "',"; }
     if($royalty_amount <> '') { $fields .= "sasroyalties_dev." . $file . ".`Total1` = '" . $royalty_amount . "',"; }
@@ -198,10 +208,24 @@ $update_query = "
 
 
 //echo "<pre>";
-mail('pclark@christianpublishing.com', 'Royalties Exceptions Update', $record_timestamp, "From: support@xulonauthors.com\r\nReply-to: pclark@christianpublishing.com\r\nContent-type: text/html; charset=iso-8859-1\r\n\n");
 
 // Update sasroyalties_dev temp tables with revised data
 $query_update_result = mysql_query($update_query);
+
+if (!$query_update_result) { 
+	mail('tmccrary@christianpublishing.com', 'Royalties Exceptions Update', $update_query, "From: support@xulonauthors.com\r\nReply-to: tmccrary@christianpublishing.com\r\nContent-type: text/html; charset=iso-8859-1\r\n\n");
+}
+
+
+
+if (!$books_sold) { $books_sold='0'; } else { $books_sold='0'; }
+if (!$books_returned) { $books_returned='0'; } 
+
+$query_update_royalty_processing = "update sasroyalties.royalty_processing set revised_isbn = '$isbn', revised_books_sold = $books_sold, revised_books_returned = $books_returned, revised_royalty_amount = $royalty_amount, revised_date=NOW() where ORG_FILE_SOURCE='$file' and ORG_FILE_SOURCE_RECORD_ID=$id";
+$resultupdate=mysql_query($query_update_royalty_processing);
+
+
+	//mail('tmccrary@christianpublishing.com', 'Royalties Exceptions Update', $query_update_royalty_processing, "From: support@xulonauthors.com\r\nReply-to: tmccrary@christianpublishing.com\r\nContent-type: text/html; charset=iso-8859-1\r\n\n");
 
 mysql_close();
 

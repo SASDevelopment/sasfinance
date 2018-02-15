@@ -118,7 +118,13 @@ $query = "
     sasroyalties.royalty_processing.royalty_classification,
     sasroyalties.royalty_processing.period_exchange_rate,
     sasroyalties.royalty_processing.is_exception,
-    sasroyalties.royalty_processing.exclude
+    sasroyalties.royalty_processing.exclude,
+	revised_isbn,
+	revised_books_sold,
+	revised_books_returned,
+	revised_royalty_amount,
+	revised_date
+
     FROM
     sasroyalties.royalty_processing
     WHERE
@@ -154,6 +160,11 @@ if($num_records) {
             $imprint_brand_id = $myrows['imprint_brand_id'];
             $royalty_classfication = $myrows['royalty_classfication'];
             $period_exchange_rate = $myrows['period_exchange_rate'];
+            $revised_isbn = $myrows['revised_isbn'];
+            $revised_books_sold = $myrows['revised_books_sold'];
+            $revised_books_returned = $myrows['revised_books_returned'];
+            $revised_royalty_amount = $myrows['revised_royalty_amount'];
+            $revised_date = $myrows['revised_date'];
 
             $isbn_edit = "alert(" . $Royalty_ISBN . ")";
             $roymonth_edit = "alert(" . $Royalty_ISBN . ")";
@@ -161,6 +172,8 @@ if($num_records) {
             $roybookreturned_edit = "alert(" . $Royalty_ISBN . ")";
             $royamount_edit = "alert(" . $Royalty_ISBN . ")";
             $class_edit = "alert(" . $Royalty_ISBN . ")";
+
+			if ($ORG_FILE_SOURCE == 'eBooks - Logos Research') { $ORG_FILE_SOURCE='temp_ebook_google'; }
 
             $returns = 0;
             $sold = 0;
@@ -224,20 +237,24 @@ if($num_records) {
                     if($id <> $edit) { $fgcolor="<font color='#A6ACAF'>"; $rowcolor = "bgcolor=white"; }
                 }
 
+				if ($revised_date) { 
+					$revised_date='(Revised '.date('m/d/Y g:i A', strtotime($revised_date)).')';
+				}
+
                 $tablerows .= "
                     <tr id='tr_" . $count . "' $rowcolor>
                         <!--td>$fgcolor$id</font></td>
                         <td>$fgcolor$ORG_FILE_SOURCE</td-->
-                        <td><a href='royalties_exceptions_popup.php?file=".$ORG_FILE_SOURCE."&id=".$ORG_FILE_SOURCE_RECORD_ID."' onclick=\"return hs.htmlExpand(this, { objectType: 'iframe', height: '600', width: '900', headingText: '$ORG_FILE_SOURCE ($ORG_FILE_SOURCE_RECORD_ID)' } )\" title=\"Edit\">$ORG_FILE_SOURCE_RECORD_ID</a></td>
+                        <td><a href='royalties_exceptions_popup.php?file=".$ORG_FILE_SOURCE."&id=".$ORG_FILE_SOURCE_RECORD_ID."' onclick=\"return hs.htmlExpand(this, { objectType: 'iframe', height: '600', width: '900', headingText: '$ORG_FILE_SOURCE ($ORG_FILE_SOURCE_RECORD_ID)' } )\" title=\"Edit\">$ORG_FILE_SOURCE_RECORD_ID</a><br><span style='color:red;'>$revised_date</span></td>
                         <td>$fgcolor$projectid</td>
                         <td>$fgcolor$Contact_ID</td>
-                        <td>$fgcolor$Royalty_ISBN</td>
+                        <td>$fgcolor$Royalty_ISBN<br><span style='color:red;'>$revised_isbn</span></td>
                         <td>$fgcolor$ORG_TITLE<br>$ORG_AUTHOR</td>
                         <td>$fgcolor$Royalty_Month</td>
                         <td>$fgcolor$Royalty_Source</td>
-                        <td>$fgcolor$Royalty_Books_Sold</td>
-                        <td>$fgcolor$Royalty_Books_Returned</td>
-                        <td>$fgcolor" . number_format(str_replace("$", "", $Royalty_Amount), 2) . "</td>
+                        <td>$fgcolor$Royalty_Books_Sold<br><span style='color:red;'>$revised_books_sold</span></td>
+                        <td>$fgcolor$Royalty_Books_Returned<br><span style='color:red;'>$revised_books_returned</span></td>
+                        <td>$fgcolor" . number_format(str_replace("$", "", $Royalty_Amount), 2) . "<br><span style='color:red;'>$revised_royalty_amount</span></td>
                         <!--td>$fgcolor$last_modified_timestamp</td>
                         <td>$fgcolor$record_timestamp</td>
                         <td>$fgcolor$imprint_brand_id</td>
@@ -297,7 +314,7 @@ echo $mailcontent;
         <td id="excel" width="30"><div align="left"><?php echo $count-1; ?></div></td>
         <td id="excel" width="155"><form method='POST' action='/xulonreports/csv/<?php echo $_SESSION["xulonname"]; ?>_royalties_exceptions_report.xls' target='_blank'><input type="submit" name="button2" id="button2" value="Export CSV File" style='width:150px;'></form></td>
         <td id="excel" width="155"></td>
-        <td width="155"><input class="btn1" type='button' id='reprocess' value='Re-process Exceptions' onclick='reprocess()'></td>
+        <td width="155"><input class="btn1" type='button' id='reprocess' value='Re-process Exceptions' onclick='reprocess()'><br><span style='color:red'>You must reprocess exceptions before continuing to Step 6...</span></td>
     </tr>
 </table>
 

@@ -244,7 +244,7 @@ function royalties3_table_count($TEMP_TABLE) {
 	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
 	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
 
-	$query_select_royalty_processing = $db->query("SELECT count(id) as count FROM sasroyalties_dev.$TEMP_TABLE");
+	$query_select_royalty_processing = $db->query("SELECT count(*) as count FROM sasroyalties_dev.$TEMP_TABLE");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
 		$count=$myrow['count'];
 	}
