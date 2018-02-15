@@ -1,6 +1,7 @@
 <?php include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php"); ?>
+<!--2018-02-15-->
 <? 
-<!--2/15/2018-->
+
 include_once('assets/functions.royalties3.php'); 
 
 
