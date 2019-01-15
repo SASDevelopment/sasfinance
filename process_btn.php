@@ -1,3 +1,4 @@
+<? include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php"); ?>
 <script type="text/javascript">
   function closeToast() {
 	// Get toast DOM Element, get instance, then call remove function
@@ -115,8 +116,15 @@ if ($step==6) {
 	$query_sp = "CALL sasroyalties_dev.step09_load_transactions_to_dev_authors_net_royalties()";
 	$query_call_sp=$db->query($query_sp);
 
+	
+	$query_sp = "CALL xulonroyalties.charge_overdue_renewals_to_royalties_sas()";
+	$query_call_sp=$db->query($query_sp);
+
 	$db->close();
+
 }
+
+
 ?>
 
 

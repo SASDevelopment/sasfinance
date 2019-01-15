@@ -91,7 +91,7 @@ if ($hide_sales==1) {
 ?>
 	<br>
 	<? if ($_REQUEST['PID']) { ?>
-	<iframe src="hc_royalty_sales_frame.php?PID=<?=$_REQUEST['PID']?>" width="100%" height="500" frameborder="0" scrolling="yes"></iframe>
+	<iframe src="hc_royalty_sales_frame.php?PID=<?=$_REQUEST['PID']?>&GETCID=<?=$_REQUEST['GETCID']?>&HC_ENTITY_ID=<?=$_REQUEST['HC_ENTITY_ID']?>&HC_BOOK_ID=<?=$_REQUEST['HC_BOOK_ID']?>" width="100%" height="500" frameborder="0" scrolling="yes"></iframe>
 	<? } 
 	
 }?>

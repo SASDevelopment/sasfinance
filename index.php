@@ -1,6 +1,5 @@
 <?php include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php"); ?>
 <? 
-
 include_once('assets/functions.royalties3.php'); 
 
 
@@ -12,7 +11,6 @@ if ($step) {
 	include('process_btn.php');
 }
 ?>
-<!--2018-02-15 notes-->
 <html>
 <head>
 	<title> Royalties 3.0 </title>
@@ -101,7 +99,7 @@ if ($step) {
   </nav>
 
 <?
-for ($i=1; $i<=10; $i++){
+for ($i=1; $i<=8; $i++){
 	/*if ($step>=$i) { 
 		$panel[$i]='darken-2';
 	}*/
@@ -289,18 +287,46 @@ if ($step>=4) {
 
 
 
+
+
 <a name="step7">
 <h5 class="header">Step 7</h5>
-<p>View royalty reports before loading to Author Center.</p>
 
 <div class="card-panel grey <?=$panel[7]?>" style="width: 100%;;">
-<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="/xuloncontrolpanel/einstein" target='_blank' onclick="closeToast();">View Royalty Test Reports</a></h5><!--#modal7-->
+<h5><i class="small material-icons" style="vertical-align:middle">credit_card</i> <a class="modal-trigger" href="#modal7" onclick="closeToast();">View authors selected to be charged for overdue renewals</a></h5>
 </div>
 
 <!-- Modal Structure -->
 	<div id="modal7" class="modal">
 	  <div class="modal-content">
-		<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="#modal7">View Royalty Test Reports</a></h5>
+		<h5><i class="small material-icons" style="vertical-align:middle">credit_card</i> View authors selected to be charged overdue renewals</h5>
+		<p><iframe width='100%' height='75%' src='view_charged.php' frameborder='0' allowfullscreen></iframe></p>
+	  </div>
+	  <div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
+		<!--a href="index.php?step=7&stepContent=I've selected the authors to charge&process=1#step7" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">thumb_up</i>I've selected the authors to charge</a-->
+	  </div>
+	</div>
+
+
+
+
+
+
+
+
+<a name="step8">
+<h5 class="header">Step 8</h5>
+<p>View royalty reports before loading to Author Center.</p>
+
+<div class="card-panel grey <?=$panel[8]?>" style="width: 100%;;">
+<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="/xuloncontrolpanel/einstein" target='_blank' onclick="closeToast();">View Royalty Test Reports</a></h5><!--#modal8-->
+</div>
+
+<!-- Modal Structure -->
+	<div id="modal8" class="modal">
+	  <div class="modal-content">
+		<h5><i class="small material-icons" style="vertical-align:middle">visibility</i> <a class="modal-trigger" href="#modal8">View Royalty Test Reports</a></h5>
 		<p style="font-weight:bold;">Xulon</p>
 		<li><a href="reports.php?type=xp_home" target="_blank">Home</a>
 		<li><a href="reports.php?type=xp_home" target="_blank">Summary</a>
@@ -311,72 +337,72 @@ if ($step>=4) {
 		<li><a href="reports.php?type=hc_dist" target="_blank">Distribution Report</a>
 	  </div>
 	  <div class="modal-footer">
-		<a href="index.php?step=7&stepContent=View Royalty Test Reports&process=1#step7" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
+		<a href="index.php?step=8&stepContent=View Royalty Test Reports&process=1#step7" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
 	  </div>
 	</div>
 
-
-
-
-<a name="step8">
-<h5 class="header">Step 8</h5>
-<p>This step will copy imported sales data to authors_net_royalties, which will display in Author Center.</p>
-
-<div class="card-panel grey <?=$panel[8]?>" style="width: 100%;;">
-<h5><i class="small material-icons" style="vertical-align:middle">verified_user</i> <a class="modal-trigger" href="#modal8" onclick="closeToast();">Load Sales Data to Live Server (Author Center)</a></h5>
-</div>
-
-<!-- Modal Structure -->
-	<div id="modal8" class="modal">
-	  <div class="modal-content">
-		<h5><i class="small material-icons" style="vertical-align:middle">verified_user</i> <a class="modal-trigger" href="#modal8">Load Sales Data to Live Server (Author Center)</a></h5>
-		<p>Ready to display sales data to authors?  Click the button below...</p>
-	  </div>
-	  <div class="modal-footer">
-		<a href="#!" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Cancel</a>
-		<a href="index.php?step=8&stepContent=Load Sales Data to Live Server (Author Center)&process=1#step8" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">thumb_up</i>Load Sales Data to Live Server (Author Center)</a>
-	  </div>
-	</div>
 
 
 
 <a name="step9">
 <h5 class="header">Step 9</h5>
-<p>This step will copy data from authors_net_royalties to check_batch_master.</p>
+<p>This step will copy imported sales data to authors_net_royalties, which will display in Author Center.</p>
 
 <div class="card-panel grey <?=$panel[9]?>" style="width: 100%;;">
-<h5><i class="blue-text text-darken-2 small material-icons" style="vertical-align:middle">local_atm</i> <a class="modal-trigger" href="#modal9"" onclick="closeToast();">Process Check Batch</a></h5>
+<h5><i class="small material-icons" style="vertical-align:middle">verified_user</i> <a class="modal-trigger" href="#modal9" onclick="closeToast();" style="text-decoration: line-through;">Load Sales Data to Live Server (Author Center)</a></h5>
 </div>
 
 <!-- Modal Structure -->
 	<div id="modal9" class="modal">
 	  <div class="modal-content">
-		<h5><i class="small material-icons" style="vertical-align:middle">local_atm</i> <a class="modal-trigger" href="#modal9">Process Check Batch</a></h5>
+		<h5><i class="small material-icons" style="vertical-align:middle">verified_user</i> <a class="modal-trigger" href="#modal9">Load Sales Data to Live Server (Author Center)</a></h5>
+		<p>Ready to display sales data to authors?  Click the button below...</p>
+	  </div>
+	  <div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Cancel</a>
+		<a href="index.php?step=9&stepContent=Load Sales Data to Live Server (Author Center)&process=1#step9" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">thumb_up</i>Load Sales Data to Live Server (Author Center)</a>
+	  </div>
+	</div>
+
+
+
+<a name="step10">
+<h5 class="header">Step 10</h5>
+<p>This step will copy data from authors_net_royalties to check_batch_master.</p>
+
+<div class="card-panel grey <?=$panel[10]?>" style="width: 100%;">
+<h5><i class="blue-text text-darken-2 small material-icons" style="vertical-align:middle">local_atm</i> <a class="modal-trigger" href="#modal10"" onclick="closeToast();" style="text-decoration: line-through;">Process Check Batch</a></h5>
+</div>
+
+<!-- Modal Structure -->
+	<div id="modal10" class="modal">
+	  <div class="modal-content">
+		<h5><i class="small material-icons" style="vertical-align:middle">local_atm</i> <a class="modal-trigger" href="#modal10">Process Check Batch</a></h5>
 		<p style="font-weight:bold;">Process</p>
 		<li><a href="process.php?type=E" target="_blank">Process Check Batch for Existing Authors</a>
 		<li><a href="process.php?type=N" target="_blank">Process Check Batch for New Authors</a>
 	  </div>
 	  <div class="modal-footer">
 		<a href="#!" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Cancel</a>
-		<a href="index.php?step=9&stepContent=Process Check Batch&process=1#step9" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">thumb_up</i>Processing Completed</a>
+		<a href="index.php?step=10&stepContent=Process Check Batch&process=1#step10" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">thumb_up</i>Processing Completed</a>
 	  </div>
 	</div>
 
 
 
 
-<a name="step10">
-<h5 class="header">Step 10</h5>
+<a name="step11">
+<h5 class="header">Step 11</h5>
 
-<div class="card-panel grey <?=$panel[10]?>" style="width: 100%;;">
-<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal10" onclick="closeToast()">Check Batch Export</a></h5>
+<div class="card-panel grey <?=$panel[11]?>" style="width: 110%;;">
+<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal11" onclick="closeToast()" style="text-decoration: line-through;">Check Batch Export</a></h5>
 
 
 </div>
 <!-- Modal Structure -->
-	<div id="modal10" class="modal">
+	<div id="modal11" class="modal">
 	  <div class="modal-content">
-		<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal10">Xulon Check Batch Export</a></h5>
+		<h5><i class="small material-icons" style="vertical-align:middle">file_download</i> <a class="modal-trigger" href="#modal11">Xulon Check Batch Export</a></h5>
 		<p style="font-weight:bold;">Export Xulon</p>
 		<li><a href="check_batch_export.php?type=New_US" target="_blank">New_US</a>
 		<li><a href="check_batch_export.php?type=New_Intl" target="_blank">New_Intl</a>
@@ -389,7 +415,7 @@ if ($step>=4) {
 		<li><a href="check_batch_export.php?type=Existing_Intl" target="_blank">Existing_Intl</a>
 	  </div>
 	  <div class="modal-footer">
-		<a href="index.php?step=10&stepContent=Check Batch Export&process=1#step10" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
+		<a href="index.php?step=11&stepContent=Check Batch Export&process=1#step11" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
 	  </div>
 	</div>
 

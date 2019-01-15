@@ -8,6 +8,8 @@ include_once($_SERVER["DOCUMENT_ROOT"].'/assets/functions.all.php');
 $use_db='sasroyalties';
 //$use_db='xulonroyalties';
 
+//print_r($_REQUEST);
+
 
 if (!$_REQUEST['GETCID']) { 
 	echo 'An error occurred.';
@@ -145,38 +147,61 @@ function display_acc_info($projectid) {
 
 display_acc_info($_REQUEST['PID']);
 
-function get_selected_start_month() {
+//function get_selected_start_month() {
 	$start_month_val=$_REQUEST['start_month_val'];
 	if($start_month_val) { 
-		$SELECTED[$start_month_val]='SELECTED';
+		$SELECTEDSTART[$start_month_val]='SELECTED';
 	} else {
-		$SELECTED['01']='SELECTED';
+		$SELECTEDSTART['01']='SELECTED';
 	}
-	return $SELECTED;
-}
+	//return $SELECTEDSTART;
+//}
 
-function get_selected_end_month() {
+//function get_selected_end_month() {
 	$end_month_val=$_REQUEST['end_month_val'];
 	if($end_month_val) { 
-		$SELECTED[$end_month_val]='SELECTED';
+		$SELECTEDEND[$end_month_val]='SELECTED';
 	} else {
-		$SELECTED[date('m')]='SELECTED';
+		$SELECTEDEND[date('m')]='SELECTED';
 	}
-	return $SELECTED;
-}
+	//return $SELECTEDEND;
+//}
 
-$SELECTEDSTART=get_selected_start_month();
+//function get_selected_start_year() {
+	$start_year_val=$_REQUEST['start_year_val'];
+	if($start_year_val) { 
+		$SELECTEDSTARTYEAR[$start_year_val]='SELECTED';
+	} else {
+		$SELECTEDSTARTYEAR[date('Y')]='SELECTED';
+	}
+	//return $SELECTEDSTARTYEAR;
+//}
+
+//function get_selected_end_year() {
+	$end_year_val=$_REQUEST['end_year_val'];
+	if($end_year_val) { 
+		$SELECTEDENDYEAR[$end_year_val]='SELECTED';
+	} else {
+		$SELECTEDENDYEAR[date('Y')]='SELECTED';
+	}
+	//return $SELECTEDENDYEAR;
+//}
+
+/*$SELECTEDSTART=get_selected_start_month();
 $SELECTEDEND=get_selected_end_month();
+
+$SELECTEDSTARTYEAR=get_selected_start_year();
+$SELECTEDENDYEAR=get_selected_end_year();*/
 ?>
 <form method='GET' action='<?=$_SERVER['PHP_SELF']?>'>
         <div id="DateSelector" style="padding: 10px; width: 650px; float: left;">
             Period:
         from
-        <select id="start_month_val" name="start_month_val">
+       <select id="start_month_val" name="start_month_val">
             <option value="01" <?=$SELECTEDSTART['01']?>>Jan</option>
             <option value="02" <?=$SELECTEDSTART['02']?>>Feb</option>
             <option value="03" <?=$SELECTEDSTART['03']?>>Mar</option>
-            <option value="04" <?=$SELECTEDSTART['041']?>>Apr</option>
+            <option value="04" <?=$SELECTEDSTART['04']?>>Apr</option>
             <option value="05" <?=$SELECTEDSTART['05']?>>May</option>
             <option value="06" <?=$SELECTEDSTART['06']?>>Jun</option>
             <option value="07" <?=$SELECTEDSTART['07']?>>Jul</option>
@@ -186,16 +211,24 @@ $SELECTEDEND=get_selected_end_month();
             <option value="11" <?=$SELECTEDSTART['11']?>>Nov</option>
             <option value="12" <?=$SELECTEDSTART['12']?>>Dec</option>
         </select>
-            / 
+            /
         <select id="start_year_val" name="start_year_val">
-            <option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017" selected>2017</option>
+			<option value="2010" <?=$SELECTEDSTARTYEAR['2010']?>>2010</option>
+			<option value="2011" <?=$SELECTEDSTARTYEAR['2011']?>>2011</option>
+			<option value="2012" <?=$SELECTEDSTARTYEAR['2012']?>>2012</option>
+			<option value="2013" <?=$SELECTEDSTARTYEAR['2013']?>>2013</option>
+			<option value="2014" <?=$SELECTEDSTARTYEAR['2014']?>>2014</option>
+			<option value="2015" <?=$SELECTEDSTARTYEAR['2015']?>>2015</option>
+			<option value="2016" <?=$SELECTEDSTARTYEAR['2016']?>>2016</option>
+			<option value="2017" <?=$SELECTEDSTARTYEAR['2017']?>>2017</option>
+			<option value="2018" <?=$SELECTEDSTARTYEAR['2018']?>>2018</option>
         </select>
             through
         <select id="end_month_val" name="end_month_val">
               <option value="01" <?=$SELECTEDEND['01']?>>Jan</option>
             <option value="02" <?=$SELECTEDEND['02']?>>Feb</option>
             <option value="03" <?=$SELECTEDEND['03']?>>Mar</option>
-            <option value="04" <?=$SELECTEDEND['041']?>>Apr</option>
+            <option value="04" <?=$SELECTEDEND['04']?>>Apr</option>
             <option value="05" <?=$SELECTEDEND['05']?>>May</option>
             <option value="06" <?=$SELECTEDEND['06']?>>Jun</option>
             <option value="07" <?=$SELECTEDEND['07']?>>Jul</option>
@@ -205,9 +238,17 @@ $SELECTEDEND=get_selected_end_month();
             <option value="11" <?=$SELECTEDEND['11']?>>Nov</option>
             <option value="12" <?=$SELECTEDEND['12']?>>Dec</option>
         </select>
-            / 
+            /
         <select id="end_year_val" name="end_year_val">
-            <option value="2010">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2015">2015</option><option value="2016">2016</option><option value="2017" selected>2017</option><option value="2018">2018</option>
+			<option value="2010" <?=$SELECTEDENDYEAR['2010']?>>2010</option>
+			<option value="2011" <?=$SELECTEDENDYEAR['2011']?>>2011</option>
+			<option value="2012" <?=$SELECTEDENDYEAR['2012']?>>2012</option>
+			<option value="2013" <?=$SELECTEDENDYEAR['2013']?>>2013</option>
+			<option value="2014" <?=$SELECTEDENDYEAR['2014']?>>2014</option>
+			<option value="2015" <?=$SELECTEDENDYEAR['2015']?>>2015</option>
+			<option value="2016" <?=$SELECTEDENDYEAR['2016']?>>2016</option>
+			<option value="2017" <?=$SELECTEDENDYEAR['2017']?>>2017</option>
+			<option value="2018" <?=$SELECTEDENDYEAR['2018']?>>2018</option>
         </select>
 			<input type='hidden' name='PID' value='<?=$_REQUEST['PID']?>'>
             <input type="submit" value="View Sales" class="submitbutton1" id="salesdetails" />
@@ -287,8 +328,8 @@ function display_physical_book_distribution($GETPID, $GETSTARTDATE, $GETENDDATE)
 	//echo "<table>";
 
 	echo "
-	<th>Transaction Date
 	<th>Date Posted
+	<th>Transaction Date
 	<th>Description
 	<th>Transaction
 	<th>Qty
@@ -320,16 +361,17 @@ function display_physical_book_distribution($GETPID, $GETSTARTDATE, $GETENDDATE)
 		Royalty_Amount, 
 		royalty_classification,
 		authors_net_royalties.Check_Batch_Timestamp, 
+		authors_net_royalties.adjustment_description, 
 		DATE_FORMAT(date_posted,'%m/%d/%Y') as date_posted
 	FROM
 		$use_db.authors_net_royalties
 	INNER JOIN $use_db.contacts_isbns ON authors_net_royalties.projectid = contacts_isbns.projectid
 	WHERE
 		authors_net_royalties.projectid = $GETPID
-	AND Royalty_Month BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
+	AND date_posted BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
 	AND ((Royalty_Source NOT LIKE 'MyBookOrders' and Royalty_Source NOT LIKE '%Pallet Storage%' and (royalty_classification not like '%ebook%' or royalty_classification is null)) or Royalty_Source IS NULL)
 	GROUP BY authors_net_royalties.id
-	ORDER BY Royalty_Month ASC;");
+	ORDER BY date_posted ASC;");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
 		$Royalty_ISBN=$myrow['Royalty_ISBN'];
 		$Royalty_Month=$myrow['Royalty_Month'];
@@ -344,7 +386,12 @@ function display_physical_book_distribution($GETPID, $GETSTARTDATE, $GETENDDATE)
 		$Royalty_Amount=$myrow['Royalty_Amount'];
 		$royalty_classification=$myrow['royalty_classification'];
 		$Check_Batch_Timestamp=$myrow['Check_Batch_Timestamp'];
+		$adjustment_description=$myrow['adjustment_description'];
 		$date_posted=$myrow['date_posted'];
+		
+		if ($adjustment_description) { 
+			$adjustment_description="<span style='color:#1B4F72;font-weight:bold;'>$adjustment_description</span>";
+		}
 
 		$Total_TRA=$Total_TRA+$Royalty_Amount;
 
@@ -357,9 +404,9 @@ function display_physical_book_distribution($GETPID, $GETSTARTDATE, $GETENDDATE)
 		//$rowcolor="style='background-color:#006400'";
 
 		echo "<tr $rowcolor>
-		<td>$Royalty_Month</td>
 		<td>$date_posted</td>
-		<td>$Description  <!--($Royalty_ISBN)--></td>
+		<td>$Royalty_Month</td>
+		<td>$Description  <!--($Royalty_ISBN)--><br>$adjustment_description</td>
 		<td>$transaction_description</td>
 		<td>$Net_Sold</td>
 		<td>".convert_neg($wholesale_pct)."</td>
@@ -369,6 +416,10 @@ function display_physical_book_distribution($GETPID, $GETSTARTDATE, $GETENDDATE)
 		<td>".convert_neg($misc_fee)."</td>
 		<td>".convert_neg($Royalty_Amount)."</td>
 		</tr>";
+
+		if ($adjustment_description) { 
+			//echo "<tr $rowcolor><td colspan=10 style='color:#1B4F72;'>$adjustment_description</td></tr>";
+		}
 	}
 	$query_select_royalty_processing->free();
 	$db->close();
@@ -389,8 +440,8 @@ function display_ebook_distribution($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	//echo "<table>";
 
 	echo "
-	<th>Transaction Date
 	<th>Date Posted
+	<th>Transaction Date
 	<th>Description
 	<th>
 	<th>Qty
@@ -428,10 +479,10 @@ function display_ebook_distribution($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	INNER JOIN $use_db.contacts_isbns ON authors_net_royalties.projectid = contacts_isbns.projectid
 	WHERE
 		authors_net_royalties.projectid = $GETPID
-	AND Royalty_Month BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
+	AND date_posted BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
 	AND (royalty_classification like '%ebook%')
 	GROUP BY authors_net_royalties.id
-	ORDER BY Royalty_Month ASC;");
+	ORDER BY date_posted ASC;");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
 		$Royalty_ISBN=$myrow['Royalty_ISBN'];
 		$Royalty_Month=$myrow['Royalty_Month'];
@@ -458,8 +509,8 @@ function display_ebook_distribution($GETPID, $GETSTARTDATE, $GETENDDATE) {
 		}
 
 		echo "<tr $rowcolor>
-		<td>$Royalty_Month</td>
 		<td>$date_posted</td>
+		<td>$Royalty_Month</td>
 		<td>$Description <!--($Royalty_ISBN)--></td>
 		<td>&nbsp;</td>
 		<td>$Net_Sold</td>
@@ -490,8 +541,8 @@ function display_storage_fees($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	//echo "<table>";
 
 	echo "
-	<th>Transaction Date
 	<th>Date Posted
+	<th>Transaction Date
 	<th>
 	<th>
 	<th>
@@ -516,7 +567,7 @@ function display_storage_fees($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	INNER JOIN $use_db.contacts_isbns ON authors_net_royalties.projectid = contacts_isbns.projectid
 	WHERE
 		authors_net_royalties.projectid = $GETPID
-	AND Royalty_Month BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
+	AND date_posted BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
 	and royalty_classification like '%storage%'
 	GROUP BY authors_net_royalties.id;");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
@@ -536,8 +587,8 @@ function display_storage_fees($GETPID, $GETSTARTDATE, $GETENDDATE) {
 		}
 
 		echo "<tr $rowcolor>
-		<td width='10%'>$Royalty_Month</td>
 		<td>$date_posted</td>
+		<td width='10%'>$Royalty_Month</td>
 		<td width='10%'>&nbsp;</td>
 		<td width='10%'>&nbsp;</td>
 		<td width='10%'>&nbsp;</td>
@@ -566,8 +617,8 @@ function display_mbo_sales($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	//echo "<table>";
 
 	echo "
-	<th width='10%'>Transaction Date
 	<th width='10%'>Date Posted
+	<th width='10%'>Transaction Date
 	<th width='10%'>Format
 	<th width='10%'>Qty
 	<th width='10%'>Total Unit Price
@@ -600,7 +651,7 @@ function display_mbo_sales($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	INNER JOIN $use_db.contacts_isbns ON authors_net_royalties.projectid = contacts_isbns.projectid
 	WHERE
 		authors_net_royalties.projectid = $GETPID
-	AND Royalty_Month BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
+	AND date_posted BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
 	and Royalty_Source like '%MyBookOrders%'
 	GROUP BY authors_net_royalties.id;");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
@@ -626,8 +677,8 @@ function display_mbo_sales($GETPID, $GETSTARTDATE, $GETENDDATE) {
 		}
 
 		echo "<tr $rowcolor>
-		<td width='10%'>$Royalty_Month</td>
 		<td>$date_posted</td>
+		<td width='10%'>$Royalty_Month</td>
 		<td width='10%'>$format</td>
 		<td width='10%'>$Net_Sold</td>
 		<td width='10%'>".convert_neg($total_unit_price)."</td>
@@ -676,17 +727,19 @@ function display_royalty_adjustment($GETPID, $GETSTARTDATE, $GETENDDATE) {
 	$query_select_royalty_processing = $db->query("
 	SELECT
 		DATE_FORMAT(Royalty_Month,'%m/%d/%Y') as Royalty_Month,
+		DATE_FORMAT(date_posted,'%m/%d/%Y') as date_posted,
 		Royalty_Amount 
 	FROM
 		$use_db.authors_net_royalties
 	WHERE
 		authors_net_royalties.projectid = $GETPID
 	INNER JOIN $use_db.contacts_isbns ON authors_net_royalties.projectid = contacts_isbns.projectid
-	AND Royalty_Month BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
+	AND date_posted BETWEEN '$GETSTARTDATE' and '$GETENDDATE'
 	and Royalty_Source like '%adjust%
 	GROUP BY authors_net_royalties.id;");
 	while($myrow = $query_select_royalty_processing->fetch_assoc()) {
 		$Royalty_Month=$myrow['Royalty_Month'];
+		$date_posted=$myrow['date_posted'];
 		$Royalty_Amount=$myrow['Royalty_Amount'];
 		$royalty_classification=$myrow['royalty_classification'];
 
@@ -694,7 +747,7 @@ function display_royalty_adjustment($GETPID, $GETSTARTDATE, $GETENDDATE) {
 
 
 		echo "<tr>
-		<td width='10%'>$Royalty_Month</td>
+		<td width='10%'>$date_posted</td>
 		<td width='10%'>&nbsp;</td>
 		<td width='10%'>&nbsp;</td>
 		<td width='10%'>&nbsp;</td>

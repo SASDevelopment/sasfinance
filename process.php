@@ -1,4 +1,5 @@
 <? 
+include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php");
 include_once('assets/functions.royalties3.php'); 
 
 if (royalties3_royalty_field_form_action()) {

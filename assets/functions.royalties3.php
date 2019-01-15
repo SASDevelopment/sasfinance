@@ -236,6 +236,174 @@ function royalties3_imported_royalty_processing_data() {
 
 }
 
+
+function royalties3_view_charged_royalties() {
+
+
+
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+
+
+	$view_table='';
+	$writetotext = "Charge/Do Not Charge\tPID\tAccount Name\tLast Renewal Due Date\tRenewal Fee Qty\tRenewal Fee Qty Paid\tRenewal Fee Amount\tCurrent Distribution Balance\tQty to Charge\tTotal to Charge\tDistribution Balance Remaining After Charging Royalties\tPayment Problem Status\r\n";
+
+	$myecho = "<!--form action='#'-->
+	<table class=\"blue-text text-darken-2 bordered\"><th>PID<th>Account Name<th>Last Renewal Due Date<th>Renewal Fee Qty<th>Renewal Fee Qty Paid<th>Renewal Fee Amount<th>Current Distribution Balance<th>Qty to Charge<th>Total to Charge<th>Distribution Balance Remaining<br>After Charging Royalties<th>Payment Problem Status";
+
+	$query_select_temp_charged = $db->query("/*SELECT
+			charge_overdue_renewals_to_royalties_sas.id,
+			charge_overdue_renewals_to_royalties_sas.Contact_ID,
+			charge_overdue_renewals_to_royalties_sas.projectid,
+			charge_overdue_renewals_to_royalties_sas.Account_Name,
+			charge_overdue_renewals_to_royalties_sas.Account_Site,
+			charge_overdue_renewals_to_royalties_sas.Temp_Renewal_Due_Date,
+			charge_overdue_renewals_to_royalties_sas.Renewal_Fee_Qty,
+			charge_overdue_renewals_to_royalties_sas.Renewal_Fee_Qty_Paid,
+			charge_overdue_renewals_to_royalties_sas.Renewal_Fee_Amount,
+			charge_overdue_renewals_to_royalties_sas.Renewal_Fee_Amount_Due_Late,
+			charge_overdue_renewals_to_royalties_sas.TOTAL_TRA,
+			charge_overdue_renewals_to_royalties_sas.TRA_AFTER_PAYMENT,
+			charge_overdue_renewals_to_royalties_sas.imprint_brand_id,
+			charge_overdue_renewals_to_royalties_sas.Payment_Problem_Status,
+			charge_overdue_renewals_to_royalties_sas.eorders_ordernumber
+		FROM
+			xulonroyalties.charge_overdue_renewals_to_royalties_sas*/
+			
+			SELECT
+		Contact_ID,
+		accounts.projectid, 
+		accounts.projectid as PID,
+		Account_Name,
+		Account_Site,
+		Account_ID, 
+		Temp_Renewal_Due_Date,
+		Renewal_Fee_Qty,
+		(
+			Renewal_Fee_Qty_Paid + Renewal_Fee_Qty_Charged
+		) AS Renewal_Fee_Qty_Paid,
+		Renewal_Fee_Product_Price as Renewal_Fee_Amount,
+		Renewal_Fee_Amount_Due_Late,
+		@TRA := xulonroyalties.get_sas_tra (Contact_ID) AS TOTAL_TRA,
+		@TRA - Renewal_Fee_Product_Price AS TRA_AFTER_PAYMENT,
+		imprint_brand_id, 
+		Payment_Problem_Status, 
+		(SELECT Last_Modified_Date from xulonpress.es_change_log where projectid=PID and (Update_Query like '%CANCEL%' or Update_Query like '%TERMINATE%') limit 1) as Cancel_Date 
+	FROM
+		sasroyalties.accounts
+	inner join xulonroyalties.charge_royalties_projectid on accounts.projectid=charge_royalties_projectid.projectid
+	WHERE
+		Renewal_Fee_Amount_Due_Late > 0
+	AND Renewal_Fee_Times_Late > 0
+	AND (Non_Renewal IS NULL or Non_Renewal=0)
+	AND CURDATE() > Temp_Renewal_Due_Date
+	AND Program_Order_Date IS NOT NULL
+	AND Program_Order_Date != '0000-00-00'
+	AND accounts.Payment_Problem_Status not like 'TEST%'
+	/*AND accounts.Payment_Problem_Status not like 'CANCEL%'
+	AND accounts.Payment_Problem_Status not like 'TERMINATE%'*/
+	HAVING 
+	  (Temp_Renewal_Due_Date<Cancel_Date or Cancel_Date is null) AND TOTAL_TRA>Renewal_Fee_Product_Price
+	ORDER BY
+		Temp_Renewal_Due_Date;
+
+		");
+	while($myrow = $query_select_temp_charged->fetch_assoc()) {
+		$id=stripslashes($myrow['id']);
+		$Account_ID=stripslashes($myrow['Account_ID']);
+		$Contact_ID=stripslashes($myrow['Contact_ID']);
+		$projectid=stripslashes($myrow['projectid']);
+		$Account_Name=stripslashes($myrow['Account_Name']);
+		$Account_Site=stripslashes($myrow['Account_Site']);
+		$Temp_Renewal_Due_Date=stripslashes($myrow['Temp_Renewal_Due_Date']);
+		$Renewal_Fee_Qty=stripslashes($myrow['Renewal_Fee_Qty']);
+		$Renewal_Fee_Qty_Paid=stripslashes($myrow['Renewal_Fee_Qty_Paid']);
+		$Renewal_Fee_Amount=stripslashes($myrow['Renewal_Fee_Amount']);
+		$Renewal_Fee_Amount_Due_Late=stripslashes($myrow['Renewal_Fee_Amount_Due_Late']);
+		$TOTAL_TRA=stripslashes($myrow['TOTAL_TRA']);
+		$TRA_AFTER_PAYMENT=stripslashes($myrow['TRA_AFTER_PAYMENT']);
+		$imprint_brand_id=stripslashes($myrow['imprint_brand_id']);
+		$Payment_Problem_Status=stripslashes($myrow['Payment_Problem_Status']);
+		$eorders_ordernumber=stripslashes($myrow['eorders_ordernumber']);
+
+		
+		if (!$CHARGED_AMOUNT[$Contact_ID]) { 
+			$CHARGED_AMOUNT[$Contact_ID]=$TOTAL_TRA;
+		}
+
+		if ($rowcount % 2) {
+			$rowcolor="bgcolor='#F0F0F0'";
+		} else {
+			$rowcolor="bgcolor='white'";
+			unset ($rowcount);
+		}
+
+		$Renewals_To_Pay=$Renewal_Fee_Qty-$Renewal_Fee_Qty_Paid;
+
+		$Ability_To_Pay=floor($CHARGED_AMOUNT[$Contact_ID]/$Renewal_Fee_Amount);
+
+		if ($Ability_To_Pay>$Renewals_To_Pay) { $Ability_To_Pay=$Renewals_To_Pay; }
+
+		$Total_Renewal_Fee_Amount=$Ability_To_Pay * $Renewal_Fee_Amount;
+		
+		$countajax++;
+
+		if ($CHARGED_AMOUNT[$Contact_ID] > $Total_Renewal_Fee_Amount && $CHARGED_AMOUNT[$Contact_ID]>$Renewal_Fee_Amount) { 
+			$rowcount++;
+			$myecho .= "<tr $rowcolor>
+			<td align='center'>$projectid</td>
+			<td><a href='/xuloncontrolpanel/einstein/index.php?Account_ID=$Account_ID' target='_blank'>$Account_Name</a></td>
+			<td align='center'>$Temp_Renewal_Due_Date</td>
+			<td align='center'>$Renewal_Fee_Qty</td>
+			<td align='center'>$Renewal_Fee_Qty_Paid</td>
+			<td align='right'>$".number_format($Renewal_Fee_Amount, 2, '.', ',')."</td>";
+
+			$charge1=$CHARGED_AMOUNT[$Contact_ID];
+
+			$myecho .= "
+			<td align='right'>$".number_format($CHARGED_AMOUNT[$Contact_ID], 2, '.', ',')."</td>
+			<td align='center'>$Ability_To_Pay</td>
+			<td align='right'>$".number_format($Total_Renewal_Fee_Amount, 2, '.', ',')."</td>
+			";
+
+			$CHARGED_AMOUNT[$Contact_ID]=$CHARGED_AMOUNT[$Contact_ID]-$Total_Renewal_Fee_Amount;
+			$charge2=$CHARGED_AMOUNT[$Contact_ID];
+
+			$myecho .= "
+			<td align='right'>$".number_format($CHARGED_AMOUNT[$Contact_ID], 2, '.', ',')."</td>
+			<td>$Payment_Problem_Status</td>
+			</tr>";
+
+			$charge_dont_charge='CHARGE';
+			
+
+			$writetotext .= "$charge_dont_charge\t$projectid\t$Account_Name\t$Temp_Renewal_Due_Date\t$Renewal_Fee_Qty\t$Renewal_Fee_Qty_Paid\t$Renewal_Fee_Amount\t".$charge1."\t$Ability_to_Pay\t$Total_Renewal_Fee_Amount\t$charge2\t$Payment_Problem_Status\r\n";
+
+			$count++;
+		}
+
+
+	
+
+	}
+	$query_select_temp_charged->free();
+	$db->close();
+
+	$myecho .= "</table>
+	<!--p><input type='submit' name='submitchecklist' value='Save Changes'></p>
+	</form-->";
+
+	$filePointer = fopen($_SERVER["DOCUMENT_ROOT"]."/xulonreports/csv/".$_SESSION["xulonname"]."_charge_royalties_report.xls", "w");
+	fputs ($filePointer, "$writetotext", 2000000);
+	fclose($filePointer);
+	
+	$myecho .= "<p><form method='POST' action='/xulonreports/csv/".$_SESSION['xulonname']."_charge_royalties_report.xls' target='_blank'><input type='submit' name='button2' id='button2' value='Export CSV File' style='width:150px;' onclick='this.form.submit();'></form></p>";
+
+
+	return $myecho;
+
+}
+
 function royalties3_table_count($TEMP_TABLE) {
 	if (!$TEMP_TABLE || !stristr($TEMP_TABLE,'temp')) { return; }
 
@@ -471,5 +639,15 @@ function royalties3_display_temp_table($table_name) {
 
 }
 
+function royalties3_anr_exclude_from_check_batch($projectid) { 
+	if (!$projectid) { return; }
 
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+
+	$query_update_authors_net_royalties = "update xulonroyalties.authors_net_royalties set exclude_from_check_batch=CURDATE() where projectid=$projectid and Check_Batch_Timestamp IS NULL";
+	$resultupdate=$db->query($query_update_authors_net_royalties);
+
+	$db->close();
+}
 ?>

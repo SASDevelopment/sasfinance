@@ -186,7 +186,11 @@ function distrep_get_distribution_balance() {
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$query_anr = $db->query("select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Check_Batch_Timestamp IS NULL and imprint_brand_id=27;");
+	$sql="select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Check_Batch_Timestamp IS NULL";
+	if ($_COOKIE['xulon_name']=='Tom McCrary') { 
+		echo $sql;
+	}
+	$query_anr = $db->query($sql);
 	//$num_results = mysqli_affected_rows($db);
 	while($myrow = $query_anr->fetch_assoc()) {
 		$distribution_balance=$myrow['distribution_balance'];
@@ -211,7 +215,7 @@ function distrep_get_distribution_balance_by_date_range($endmonth) {
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$query_anr = $db->query("select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Check_Batch_Timestamp IS NULL and imprint_brand_id=27 and Royalty_Month between '$beginning_of_time' and '$endmonth';");
+	$query_anr = $db->query("select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Check_Batch_Timestamp IS NULL  and Royalty_Month between '$beginning_of_time' and '$endmonth';");
 	//$num_results = mysqli_affected_rows($db);
 	while($myrow = $query_anr->fetch_assoc()) {
 		$distribution_balance=$myrow['distribution_balance'];
@@ -240,7 +244,7 @@ function distrep_get_distribution_balance_by_date_range($beginmonth, $endmonth) 
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$query_anr = $db->query("select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' /*and Check_Batch_Timestamp IS NULL*/ and imprint_brand_id=27 and date_posted between '$beginmonth' and '$endmonth';");
+	$query_anr = $db->query("select sum(Royalty_Amount) as distribution_balance from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' /*and Check_Batch_Timestamp IS NULL*/ and date_posted between '$beginmonth' and '$endmonth';");
 	//$num_results = mysqli_affected_rows($db);
 	while($myrow = $query_anr->fetch_assoc()) {
 		$distribution_balance=$myrow['distribution_balance'];
@@ -264,7 +268,7 @@ function distrep_get_transaction_total_by_date_range($beginmonth, $endmonth) {
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$query_anr = $db->query("select sum(Royalty_Amount) as transaction_total from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and imprint_brand_id=27 and Royalty_Month between '$beginmonth' and '$endmonth';");
+	$query_anr = $db->query("select sum(Royalty_Amount) as transaction_total from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Royalty_Month between '$beginmonth' and '$endmonth';");
 	//$num_results = mysqli_affected_rows($db);
 	while($myrow = $query_anr->fetch_assoc()) {
 		$transaction_total=$myrow['transaction_total'];
@@ -295,7 +299,7 @@ function distrep_get_distribution_balance_by_month($friendlymonth, $reportdate, 
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$sql="select Royalty_Month, date_posted, case WHEN (Royalty_Source like '%Distribution Balance%' or Royalty_Source like '%Author Payment%') then Royalty_Source WHEN Royalty_Source like '%Kindle%' THEN 'Amazon Kindle Monthly Sales Total' WHEN Royalty_Source like '%eBook%' THEN 'eBook Monthly Sales Total' ELSE concat(ORG_TITLE, ' $friendlymonth Monthly Sales Total') END as ORG_TITLE, sum(Royalty_Amount) as transaction_amount from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Royalty_Month between '$beginmonth' and '$endmonth' and imprint_brand_id=27 group by Royalty_ISBN,date_posted order by date_posted";
+	$sql="select Royalty_Month, date_posted, case WHEN (Royalty_Source like '%Distribution Balance%' or Royalty_Source like '%Author Payment%') then Royalty_Source WHEN Royalty_Source like '%Kindle%' THEN 'Amazon Kindle Monthly Sales Total' WHEN Royalty_Source like '%eBook%' THEN 'eBook Monthly Sales Total' ELSE concat(ORG_TITLE, ' $friendlymonth Monthly Sales Total') END as ORG_TITLE, sum(Royalty_Amount) as transaction_amount from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and Royalty_Month between '$beginmonth' and '$endmonth'  group by Royalty_ISBN,date_posted order by date_posted";
 
 	//echo '<li>'.$sql;
 
@@ -419,7 +423,7 @@ function distrep_get_first_royalty_month() {
 
 	$Contact_ID=mysqli_real_escape_string($db, $_SESSION['SESSCONTACTID']);
 
-	$query_select_authors_net_royalties = $db->query("select min(Royalty_Month) as first_royalty_month from $use_db.authors_net_royalties where Contact_ID='$Contact_ID' and imprint_brand_id=27 and Royalty_Month != '0000-00-00';");
+	$query_select_authors_net_royalties = $db->query("select min(Royalty_Month) as first_royalty_month from $use_db.authors_net_royalties where Contact_ID='$Contact_ID'  and Royalty_Month != '0000-00-00';");
 	//$num_results = mysqli_affected_rows($db);
 	while($myrow = $query_select_authors_net_royalties->fetch_assoc()) {
 		$first_royalty_month=$myrow['first_royalty_month'];
