@@ -1,4 +1,3 @@
-<!--1/15/2019 update at 12:02PM-->
 <?php include_once($_SERVER["DOCUMENT_ROOT"]."/cvbtech/authenticate.php"); ?>
 <? 
 include_once('assets/functions.royalties3.php'); 
@@ -287,6 +286,24 @@ if ($step>=4) {
 	</div>
 
 
+
+<a name="step6b">
+<h5 class="header"></h5>
+
+<div class="card-panel grey <?=$panel[7]?>" style="width: 100%;;">
+<h5><i class="small material-icons" style="vertical-align:middle">error</i> <a class="modal-trigger" href="#modal6b" onclick="closeToast();">$0 Exceptions Report</a></h5>
+</div>
+
+<!-- Modal Structure -->
+	<div id="modal6b" class="modal">
+	  <div class="modal-content">
+		<h5><i class="small material-icons" style="vertical-align:middle">error</i> $0.00 Exceptions Report</h5>
+		<p><iframe width='100%' height='75%' src='view_0_exceptions.php' frameborder='0' allowfullscreen></iframe></p>
+	  </div>
+	  <div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-light btn"><i class="material-icons left">clear</i>Close</a>
+	  </div>
+	</div>
 
 
 

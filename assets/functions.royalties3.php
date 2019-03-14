@@ -237,6 +237,108 @@ function royalties3_imported_royalty_processing_data() {
 }
 
 
+
+function royalties3_view_zero_exceptions() {
+
+	include($_SERVER['DOCUMENT_ROOT'].'/assets/db/db.config.php');
+	$db = new mysqli($dbserver, $dbuser, $dbpassword, $database);
+
+	$view_table='';
+	$writetotext = "Royalty_Month\tRoyalty Source\tPID\tAccount Name\tBook Title\tISBN\tVendor ID\tBooks Sold\tBooks Returned\tRoyalty Amount\tORG Royalty Amount\tStatus\r\n";
+
+	$myecho = "
+	<table class=\"blue-text text-darken-2 bordered\"><th>Royalty Month<th>Royalty Source<th>PID<th>Account Name<th>Book Title<th>ISBN<th>Vendor ID<th>Books Sold<th>Books Returned<th>Royalty Amount<th>ORG Royalty Amount<th>Status";
+
+	$query_select_temp_charged = $db->query("
+	SELECT
+		Royalty_Month, 
+		Royalty_Source,
+		projectid,
+		Account_Name,
+		Account_Site,
+		Royalty_ISBN,
+		Vendor_ID,
+		Royalty_Books_Sold,
+		Royalty_Books_Returned,
+		Royalty_Amount,
+		ORG_Royalty_Amount,
+		Payment_Problem_Status
+	FROM
+		sasroyalties.authors_net_royalties
+	WHERE
+		ORG_Royalty_Amount > 0
+	AND Royalty_Amount = 0
+	AND Royalty_Source NOT LIKE 'distr%forward'
+	AND Royalty_Source NOT LIKE 'adj%'
+
+		");
+	while($myrow = $query_select_temp_charged->fetch_assoc()) {
+		$id=stripslashes($myrow['id']);
+		$Account_ID=stripslashes($myrow['Account_ID']);
+		$Contact_ID=stripslashes($myrow['Contact_ID']);
+		$projectid=stripslashes($myrow['projectid']);
+		$Account_Name=stripslashes($myrow['Account_Name']);
+		$Account_Site=stripslashes($myrow['Account_Site']);
+		$Payment_Problem_Status=stripslashes($myrow['Payment_Problem_Status']);
+		$Royalty_Month=stripslashes($myrow['Royalty_Month']);
+		$Royalty_Source=stripslashes($myrow['Royalty_Source']);
+		$Royalty_ISBN=stripslashes($myrow['Royalty_ISBN']);
+		$Vendor_ID=stripslashes($myrow['Vendor_ID']);
+		$Royalty_Books_Sold=stripslashes($myrow['Royalty_Books_Sold']);
+		$Royalty_Books_Returned=stripslashes($myrow['Royalty_Books_Returned']);
+		$Royalty_Amount=stripslashes($myrow['Royalty_Amount']);
+		$ORG_Royalty_Amount=stripslashes($myrow['ORG_Royalty_Amount']);
+
+		if ($rowcount % 2) {
+			$rowcolor="bgcolor='#F0F0F0'";
+		} else {
+			$rowcolor="bgcolor='white'";
+			unset ($rowcount);
+		}
+
+		$countajax++;
+
+		$rowcount++;
+		$myecho .= "<tr $rowcolor>
+		<td align=''>$Royalty_Month</td>
+		<td align=''>$Royalty_Source</td>
+		<td align='center'>$projectid</td>
+		<td><a href='/xuloncontrolpanel/einstein/index.php?Account_ID=$Account_ID' target='_blank'>$Account_Name</a></td>
+		<td align='left'>$Account_Site</td>
+		<td align='center'>$Royalty_ISBN</td>
+		<td align='center'>$Vendor_ID</td>
+		<td align='right'>$Royalty_Books_Sold</td>
+		<td align='right'>$Royalty_Books_Returned</td>
+		<td align='right'>$".number_format($Royalty_Amount, 2, '.', ',')."</td>
+		<td align='right'>$".number_format($ORG_Royalty_Amount, 2, '.', ',')."</td>
+		<td>$Payment_Problem_Status</td>
+		</tr>";
+
+		$writetotext .= "$Royalty_Month\t$Royalty_Source\t$projectid\t$Account_Name\t$Account_Site\t$Royalty_ISBN\t$Vendor_ID\t$Royalty_Books_Sold\t$Royalty_Books_Returned\t$Royalty_Amount\t$ORG_Royalty_Amount\t$Payment_Problem_Status\r\n";
+
+		$count++;
+
+	}
+
+	$query_select_temp_charged->free();
+	$db->close();
+
+	$myecho .= "</table>
+	";
+
+	$filePointer = fopen($_SERVER["DOCUMENT_ROOT"]."/xulonreports/csv/".$_SESSION["xulonname"]."_zero_exceptions.xls", "w");
+	fputs ($filePointer, "$writetotext", 2000000);
+	fclose($filePointer);
+	
+	$myecho .= "<p><form method='POST' action='/xulonreports/csv/".$_SESSION['xulonname']."_zero_exceptions.xls' target='_blank'><input type='submit' name='button2' id='button2' value='Export CSV File' style='width:150px;' onclick='this.form.submit();'></form></p>";
+
+
+	return $myecho;
+
+}
+
+
+
 function royalties3_view_charged_royalties() {
 
 
